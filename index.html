@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+  <title>IPEKU Web Apps</title>
+  <link type="text/css" rel="stylesheet" href="src/css/materialize.min.css">
+
+</head>
+
+<body>
+  <header>
+    <h1 class="title center-align">IPEKU Web Apps</h1>
+  </header>
+
+  <div class="container">
+
+    <div class="card" style="padding:12px;">
+
+      <form id="form-matkul">
+        <div class="row">
+          <div class="input-field col s6">
+            <label for="txtMatkul">Mata Kuliah</label>
+            <input class="validate" placeholder="Nama Mata Kuliah" id="txtMatkul" type="text" name="mata_kuliah" />
+          </div>
+          <div class="input-field col s3">
+            <label for="txtSKS">SKS</label>
+            <input class="validate" placeholder="1-6" id="txtSKS" type="number" name="sks_kuliah" length="1" />
+          </div>
+          <div class="input-field col s3">
+            <select name="hurufMutu_kuliah">
+              <option value="" disabled selected>Pilih</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+              <option value="C">C</option>
+              <option value="D">D</option>
+              <option value="E">E</option>
+            </select>
+            <label>Huruf Mutu</label>
+          </div>
+        </div>
+
+        <div class="row" style="margin:0 0">
+
+          <div class="row">
+
+            <div class="col s3 m1 waves-effect waves-light blue btn" style="float:right;margin-left:8px;margin-right:8px;">
+
+                <input type="submit" id="matkul-op-save" value="Save" style="padding:inherit;    line-height:inherit;"/>
+
+            </div>
+
+            <a class="col s3 m1 waves-effect waves-light red btn" id="matkul-op-discard" style="float:right;">
+              Cancel
+            </a>
+
+          </div>
+
+          <!-- -->
+
+          <div class="row" style="margin-bottom:2px;margin-top:12px;">
+            <div class="col s4">
+              <h4 class="center-align flow-text" id="txttotalSKS">SKS Total: </h4></div>
+            <div class="col s4">
+              <h4 class="center-align flow-text" id="txttotalAM">Angka Mutu: </h4></div>
+            <div class="col s4">
+              <h4 class="center-align flow-text" id="txtIP">IP: </h4></div>
+          </div>
+        </div>
+
+        <input type="hidden" name="id_entry" value="0" />
+      </form>
+    </div>
+
+    <div class="card" style="padding:12px;">
+      <table id="matkul-table" class="centered">
+        <tr id="matkul-head">
+          <th>ID</th>
+          <th>Mata Kuliah</th>
+          <th>SKS</th>
+          <th>Huruf Mutu</th>
+          <th>Actions</th>
+        </tr>
+      </table>
+
+
+    </div>
+  </div>
+
+  <!-- FAB -->
+  <div class="fixed-action-btn" style="bottom: 24px; right: 24px;">
+    <a id="btnReset" class="btn-floating btn-large waves-effect waves-light red">Reset</a>
+  </div>
+
+  <script type="text/javascript" src="src/js/jquery.js"></script>
+  <script type="text/javascript" src="src/js/materialize.min.js"></script>
+  <script src="src/js/main.js"></script>
+
+  <script>
+    //Dropdown Materialize
+    $(document).ready(function() {
+      $('select').material_select();
+    });
+
+    $(document).ready(gpa);
+  </script>
+</body>
+
+</html>
