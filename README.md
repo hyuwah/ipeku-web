@@ -1,7 +1,7 @@
 # IPEKU WEB APPS
 Penghitung IP(K) / Indeks Prestasi (Kumulatif) dengan sistem grade A, B, C, D, E dan skala 4.00.
 
-[Coba IPEKU Web Apps.](http://hyuwah.github.com/ipeku-web)
+[Coba IPEKU Web Apps.](http://hyuwah.github.io/ipeku-web)
 
 > **Warning!** Still in development stage but core function works, **expect some bugs**.
 
