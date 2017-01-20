@@ -22,7 +22,7 @@ var matkul = {
     matkul.$form.addEventListener("submit", function(event) {
 
       if (matkul.$form.mata_kuliah.value != 0 &&
-        matkul.$form.sks_kuliah.value != 0 && matkul.$form.hurufMutu_kuliah.value != null) {
+        matkul.$form.sks_kuliah.value != 0 && matkul.$form.hurufMutu_kuliah.value != "null") {
       var entry = {
         id: parseInt(this.id_entry.value),
         mata_kuliah: this.mata_kuliah.value,
@@ -42,11 +42,14 @@ var matkul = {
         this.id_entry.value = 0;
         gpa();
         event.preventDefault();
+        // placeholder setting autoreload
+        //location.reload(false); //load from cache
       } else {
         //Materialize.toast('Silahkan isi formnya!', 4000)
         alert("Silahkan lengkapi formnya terlebih dahulu.");
 
       }
+
     }, true);
 
 
@@ -73,23 +76,34 @@ var matkul = {
 
     matkul.$table.addEventListener("click", function(event) {
       var op = event.target.getAttribute("data-op");
-      if (/edit|remove/.test(op)) {
         var entry = JSON.parse(window.localStorage.getItem("matkul:" + event.target.getAttribute("data-id")));
         if (op == "edit") {
           matkul.$form.mata_kuliah.value = entry.mata_kuliah;
           matkul.$form.sks_kuliah.value = entry.sks_kuliah;
           matkul.$form.hurufMutu_kuliah.value = entry.hurufMutu_kuliah;
           matkul.$form.id_entry.value = entry.id;
+          //window.scrollTo(0, 0); //to top
+          $('html, body').animate({
+    scrollTop: $("body").offset().top
+}, 300);
         } else if (op == "remove") {
-          if (confirm('Are you sure you want to remove "' + entry.mata_kuliah + '", ' + entry.sks_kuliah + ' sks, with ' + entry.hurufMutu_kuliah + ' grade from your list?')) {
-            matkul.storeRemove(entry);
-            matkul.tableRemove(entry);
-          }
+           $('#mdl-rm-matkul').openModal({
+             dismissible:false
+           });
+           document.getElementById('mdl-rm-text').innerHTML = 'Yakin ingin menghapus "' + entry.mata_kuliah + '", ' + entry.sks_kuliah + ' sks, dengan nilai ' + entry.hurufMutu_kuliah + ' dari daftar?';
+           document.getElementById('mdl-cancel-button').addEventListener("click", function(){
+              entry = 0;
+           });
+           document.getElementById('mdl-rm-button').addEventListener("click", function(){
+             matkul.storeRemove(entry);
+             matkul.tableRemove(entry);
+             gpa();
+           });
         }
         event.preventDefault();
-      }
     }, true);
   },
+
 
 
   storeAdd: function(entry) {
@@ -115,10 +129,11 @@ var matkul = {
       }
     }
     $td = document.createElement("td");
-    $td.innerHTML = '<a data-op="edit" data-id="' + entry.id + '">Edit</a> | <a data-op="remove" data-id="' + entry.id + '">Remove</a>';
+    $td.innerHTML = '<a class="waves-effect waves-grey btn-floating blue tooltipped" data-position="left" data-delay="50" data-tooltip="Edit" data-op="edit" data-id="' + entry.id + '"><i class="material-icons left" data-op="edit" data-id="' + entry.id + '">mode_edit</i></a>  <a class="waves-effect waves-grey btn-floating red tooltipped" data-position="right" data-delay="50" data-tooltip="Remove" data-op="remove" data-id="' + entry.id + '" ><i class="material-icons left" data-op="remove" data-id="' + entry.id + '">delete</i></a>';
     $tr.appendChild($td);
     $tr.setAttribute("id", "entry-" + entry.id);
-    matkul.$table.appendChild($tr);
+    //matkul.$table.appendChild($tr); //Last entry on bottom
+    matkul.$table.prepend($tr); //Last entry on top
   },
   tableEdit: function(entry) {
     var $tr = document.getElementById("entry-" + entry.id),
@@ -132,8 +147,9 @@ var matkul = {
       }
     }
     $td = document.createElement("td");
-    $td.innerHTML = '<a data-op="edit" data-id="' + entry.id + '">Edit</a> | <a data-op="remove" data-id="' + entry.id + '">Remove</a>';
+    $td.innerHTML = '<a class="waves-effect waves-grey btn-floating blue" data-op="edit" data-id="' + entry.id + '"><i class="material-icons left" data-op="edit" data-id="' + entry.id + '">mode_edit</i></a>  <a class="waves-effect waves-grey btn-floating red" data-op="remove" data-id="' + entry.id + '" ><i class="material-icons left" data-op="remove" data-id="' + entry.id + '">delete</i></a>';
     $tr.appendChild($td);
+
   },
   tableRemove: function(entry) {
     matkul.$table.removeChild(document.getElementById("entry-" + entry.id));
@@ -141,6 +157,14 @@ var matkul = {
 };
 matkul.init();
 
+var timeOut;
+function scrollToTop() {
+	if (document.body.scrollTop!=0 || document.documentElement.scrollTop!=0){
+		window.scrollBy(0,-50);
+		timeOut=setTimeout('scrollToTop()',10);
+	}
+	else clearTimeout(timeOut);
+}
 
 function gpa() {
   /**
@@ -191,18 +215,28 @@ function gpa() {
 }
 
 $("#btnReset").on("click", function(){
-  matkul.$form.reset();
-  matkul.$form.id_entry.value = 0;
-    for (var i = 0; i < matkul.index; i++) {
-      var obj = JSON.parse(localStorage.getItem("matkul:" + i));
-      if (obj !== null) {
-      var id = parseInt(obj["id"]);
-      window.localStorage.removeItem("matkul:" + id);
-      matkul.$table.removeChild(document.getElementById("entry-" + id));}
-    }
-    $("#txttotalSKS").html("SKS Total: " + 0);
-    $("#txttotalAM").html("Angka Mutu: " + 0);
-    $("#txtIP").html("IP: " + 0);
-    matkul.index = 1;
-    window.localStorage.setItem("matkul:index", matkul.index);
-} );
+  $('#mdl-reset').openModal({
+    dismissible:false
+  });
+  document.getElementById('mdl-reset-text').innerHTML = 'Yakin ingin menghapus semua dari daftar?';
+  document.getElementById('mdl-reset-no').addEventListener("click", function(){
+     entry = 0;
+  });
+  document.getElementById('mdl-reset-yes').addEventListener("click", function(){
+    matkul.$form.reset();
+    matkul.$form.id_entry.value = 0;
+      for (var i = 0; i < matkul.index; i++) {
+        var obj = JSON.parse(localStorage.getItem("matkul:" + i));
+        if (obj !== null) {
+        var id = parseInt(obj["id"]);
+        window.localStorage.removeItem("matkul:" + id);
+        matkul.$table.removeChild(document.getElementById("entry-" + id));}
+      }
+      $("#txttotalSKS").html("SKS Total: " + 0);
+      $("#txttotalAM").html("Angka Mutu: " + 0);
+      $("#txtIP").html("IP: " + 0);
+      matkul.index = 1;
+      window.localStorage.setItem("matkul:index", matkul.index);
+  });
+});
+//$('#push,section').pushpin({ top:$('#push').height() });
