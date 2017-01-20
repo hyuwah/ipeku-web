@@ -12,10 +12,11 @@ Penghitung IP(K) / Indeks Prestasi (Kumulatif) dengan sistem grade A, B, C, D, E
 ## Project Structure
 ```
 .
-├── img         # resource images, screenshot, etc
+├── img         # screenshot, etc
 ├── src          
 |   ├── css     # css component
 |   ├── fonts   # fonts component
+|   ├── img     # image resources
 |   └── js      # javascript component
 ├── index.html  # Main page
 └── README.md
@@ -28,6 +29,7 @@ Penghitung IP(K) / Indeks Prestasi (Kumulatif) dengan sistem grade A, B, C, D, E
 
 ## Credits
 Adapted from [JavaScript Web Storage Tutorial: Creating an Address Book Application](http://www.diveintojavascript.com/tutorials/web-storage-tutorial-creating-an-address-book-application)
+materializecss
 
 ## License
 MIT
